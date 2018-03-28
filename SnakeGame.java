@@ -32,6 +32,7 @@ public class SnakeGame {
 	static int points = 0;
 	
 	
+	
 	public static void endGame() {
 		timer.stop();
 		
@@ -42,24 +43,14 @@ public class SnakeGame {
 		c.setColor(Color.white);
 		c.setFont(new Font("Lucida Console", Font.PLAIN, 24));
 		c.drawString("Points: " + points, size / 2 - 65, size / 2 + 50);
+		c.drawString("Press enter to play again", size / 2 - 175, size / 2 + 100);
+
 
 	}
-	
-	public static void main(String[] args) throws InterruptedException {
-		
-		size = screenSize.height - 80;
-		while((size % 20) != 0) {
-			size -= 1;
-		}
-		box = size / 20;
-		boost = new Rectangle(size / 2, size / 2, box , box);
+	public static void startGame() throws InterruptedException{
 		
 		
-		c = new GraphicsConsole(size, size);
-		c.setLocationRelativeTo(null);
-		c.setBackgroundColor(Color.black);
 		c.clear();
-		
 		c.setFont(new Font("Lucida Console", Font.PLAIN, 64));
 		c.setColor(Color.GREEN);
 		c.drawString("Snake", size / 2 - 100, size / 2);
@@ -68,8 +59,8 @@ public class SnakeGame {
 		c.drawString("Get Ready...", size / 2 - 180, size / 2 + 50);
 		c.drawString("Use: ◄ ▲ ► ▼", size / 2 - 182, size / 2 + 100);
 		Thread.sleep(4000);
-		
-		
+
+		dir = 3;
 		ArrayList<Rectangle> body = new ArrayList<Rectangle>();
 
 		int length = 15;
@@ -116,6 +107,8 @@ public class SnakeGame {
 				}
 				c.setColor(Color.blue);
 				c.fillRect(boost.x, boost.y, boost.width,boost.height);
+				c.setColor(Color.black);
+				c.drawRect(boost.x,boost.y, boost.width, boost.height);
 				
 				c.setFont(new Font("Lucida Console", Font.PLAIN, 18));
 				c.setColor(Color.white);
@@ -153,6 +146,21 @@ public class SnakeGame {
 		timer = new Timer(100 ,taskPerformer);
 		timer.setRepeats(true);
 		timer.start();
+	}
+	public static void main(String[] args) throws InterruptedException {
+		
+		size = screenSize.height - 80;
+		while((size % 20) != 0) {
+			size -= 1;
+		}
+		box = size / 20;
+		boost = new Rectangle(size / 2, size / 2, box , box);
+		
+		c = new GraphicsConsole(size, size, "Snake Game");
+		c.setLocationRelativeTo(null);
+		c.setBackgroundColor(Color.black);
+		c.clear();
+		startGame();
 
 		while(true) {
 			//setting direction
@@ -171,6 +179,11 @@ public class SnakeGame {
 			if (c.getKeyCode() == 40) {
 				//				System.out.println("Down");
 				dir = 3;
+			}
+			if(c.getKeyCode() == GraphicsConsole.VK_ENTER){
+				timer.stop();
+				startGame();
+				points = 0;
 			}
 
 
